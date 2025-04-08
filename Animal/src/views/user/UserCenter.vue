@@ -7,7 +7,7 @@ const activeTab = ref('profile')
 
 // 用户信息
 const userInfo = ref({
-  avatar: 'https://placekitten.com/200/200',
+  avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80',
   username: '爱心用户',
   email: 'user@example.com',
   phone: '13800138000',
@@ -25,7 +25,7 @@ const adoptionRecords = ref([
     animalType: '猫',
     adoptDate: '2024-01-15',
     status: 'approved',
-    image: 'https://placekitten.com/300/200'
+    image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80'
   },
   {
     id: 2,
@@ -33,7 +33,7 @@ const adoptionRecords = ref([
     animalType: '狗',
     adoptDate: '2023-12-20',
     status: 'pending',
-    image: 'https://placekitten.com/301/200'
+    image: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80'
   }
 ])
 
@@ -80,14 +80,14 @@ const favoriteAnimals = ref([
     name: '咪咪',
     type: '猫',
     age: '2岁',
-    image: 'https://placekitten.com/302/200'
+    image: 'https://images.unsplash.com/photo-1495360010541-f48722b34f7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80'
   },
   {
     id: 2,
     name: '旺财',
     type: '狗',
     age: '1岁',
-    image: 'https://placekitten.com/303/200'
+    image: 'https://images.unsplash.com/photo-1550697851-920b181d27da?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80'
   }
 ])
 

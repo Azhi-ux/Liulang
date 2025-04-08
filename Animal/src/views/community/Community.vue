@@ -24,14 +24,14 @@ const posts = ref<Post[]>([
     title: '我家领养的小猫近况',
     content: '三个月前从平台领养的小猫现在活泼可爱，非常粘人。分享一些日常照片，希望大家也能给流浪动物一个温暖的家。',
     author: '爱心铲屎官',
-    avatar: 'https://placekitten.com/100/100',
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80',
     date: '2024-01-20 14:30',
     likes: 25,
     comments: 8,
     tags: ['领养分享', '猫咪', '日常'],
     images: [
-      'https://placekitten.com/800/600',
-      'https://placekitten.com/801/600'
+      'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80',
+      'https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80'
     ]
   },
   {
@@ -39,11 +39,14 @@ const posts = ref<Post[]>([
     title: '救助站志愿者招募',
     content: '我们的救助站需要更多志愿者帮助照顾流浪动物，主要工作包括清洁、喂食、陪伴动物等。欢迎有爱心的朋友加入我们！',
     author: '救助站站长',
-    avatar: 'https://placekitten.com/101/101',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80',
     date: '2024-01-19 16:45',
     likes: 42,
     comments: 15,
-    tags: ['志愿者招募', '公益活动']
+    tags: ['志愿者招募', '公益活动'],
+    images: [
+      'https://images.unsplash.com/photo-1550697851-920b181d27da?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80'
+    ]
   }
 ])
 

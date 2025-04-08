@@ -27,7 +27,7 @@ const animals = ref<Animal[]>([
     gender: '母',
     health: '已绝育，已接种疫苗',
     location: '北京',
-    image: 'https://placekitten.com/300/200',
+    image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80',
     description: '性格温顺，亲人，适合家养'
   },
   {
@@ -39,8 +39,32 @@ const animals = ref<Animal[]>([
     gender: '公',
     health: '已绝育，已接种疫苗',
     location: '上海',
-    image: 'https://placekitten.com/301/200',
+    image: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80',
     description: '活泼好动，特别喜欢小朋友'
+  },
+  {
+    id: 3,
+    name: '咪咪',
+    type: '猫',
+    breed: '英短',
+    age: '1.5岁',
+    gender: '母',
+    health: '已绝育，已接种疫苗',
+    location: '广州',
+    image: 'https://images.unsplash.com/photo-1495360010541-f48722b34f7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80',
+    description: '优雅安静，很会撒娇'
+  },
+  {
+    id: 4,
+    name: '旺财',
+    type: '狗',
+    breed: '拉布拉多',
+    age: '2岁',
+    gender: '公',
+    health: '已绝育，已接种疫苗',
+    location: '深圳',
+    image: 'https://images.unsplash.com/photo-1550697851-920b181d27da?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80',
+    description: '聪明听话，很适合家庭饲养'
   }
 ])
 
