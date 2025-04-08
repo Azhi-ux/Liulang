@@ -72,11 +72,11 @@ const viewAnimalDetail = (id: number) => {
       <div class="banner-content">
         <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">为流浪动物提供一个温暖的家</h1>
         <p class="text-xl text-white/90 mb-8">我们致力于帮助流浪动物找到他们永远的家</p>
-        <div class="flex gap-4">
-          <el-button type="primary" size="large" @click="router.push('/animals')">
+        <div class="flex gap-4" style="margin: 0 auto;">
+          <el-button style="margin-left: 24%;" type="primary" size="large" @click="router.push('/animals')">
             查看待领养动物
           </el-button>
-          <el-button size="large" @click="router.push('/donate')">
+          <el-button  size="large" @click="router.push('/donate')">
             爱心捐赠
           </el-button>
         </div>
@@ -132,7 +132,7 @@ const viewAnimalDetail = (id: number) => {
         </el-row>
 
         <div class="text-center mt-8">
-          <el-button type="primary" plain @click="router.push('/animals')">
+          <el-button type="primary" style="color: white;" plain @click="router.push('/animals')">
             查看更多动物
             <el-icon class="ml-1"><ArrowRight /></el-icon>
           </el-button>
@@ -162,7 +162,7 @@ const viewAnimalDetail = (id: number) => {
         </el-table>
 
         <div class="text-center mt-8">
-          <el-button type="primary" plain @click="router.push('/donate')">
+          <el-button type="primary" style="color: white;" plain @click="router.push('/donate')">
             我要捐赠
             <el-icon class="ml-1"><ArrowRight /></el-icon>
           </el-button>

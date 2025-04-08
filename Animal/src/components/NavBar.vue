@@ -42,7 +42,7 @@ const handleSelect = (key: string) => {
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center">
           <img src="/vite.svg" alt="Logo" class="h-8 w-8 mr-3">
-          <span class="text-xl font-semibold text-primary">Animal Rescue</span>
+          <span class="text-xl font-semibold text-primary">流浪动物救助平台</span>
         </div>
         
         <el-menu

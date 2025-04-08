@@ -1,112 +1,135 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
+import api from '../../../src/api'
+
+// 定义数据类型
+interface UserInfo {
+  avatar: string;
+  username: string;
+  email: string;
+  phone: string;
+  joinDate: string;
+  volunteerHours: number;
+  donationAmount: number;
+  adoptions: number;
+}
+
+interface AdoptionRecord {
+  id: number;
+  animalName: string;
+  animalType: string;
+  adoptDate: string;
+  status: string;
+  image: string;
+}
+
+interface DonationRecord {
+  id: number;
+  amount: number;
+  purpose: string;
+  date: string;
+  status: string;
+}
+
+interface VolunteerRecord {
+  id: number;
+  activity: string;
+  date: string;
+  hours: number;
+  location: string;
+}
+
+interface Animal {
+  id: number;
+  name: string;
+  type: string;
+  age: string;
+  image: string;
+}
 
 const router = useRouter()
 const activeTab = ref('profile')
 
 // 用户信息
-const userInfo = ref({
-  avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80',
-  username: '爱心用户',
-  email: 'user@example.com',
-  phone: '13800138000',
-  joinDate: '2024-01-01',
-  volunteerHours: 24,
-  donationAmount: 1000,
-  adoptions: 2
+const userInfo = ref<UserInfo>({
+  avatar: '',
+  username: '',
+  email: '',
+  phone: '',
+  joinDate: '',
+  volunteerHours: 0,
+  donationAmount: 0,
+  adoptions: 0
 })
 
 // 领养记录
-const adoptionRecords = ref([
-  {
-    id: 1,
-    animalName: '小白',
-    animalType: '猫',
-    adoptDate: '2024-01-15',
-    status: 'approved',
-    image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80'
-  },
-  {
-    id: 2,
-    animalName: '大黄',
-    animalType: '狗',
-    adoptDate: '2023-12-20',
-    status: 'pending',
-    image: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80'
-  }
-])
+const adoptionRecords = ref<AdoptionRecord[]>([])
 
 // 捐赠记录
-const donationRecords = ref([
-  {
-    id: 1,
-    amount: 500,
-    purpose: '医疗救助',
-    date: '2024-01-20',
-    status: 'success'
-  },
-  {
-    id: 2,
-    amount: 300,
-    purpose: '日常食物',
-    date: '2024-01-10',
-    status: 'success'
-  }
-])
+const donationRecords = ref<DonationRecord[]>([])
 
 // 志愿记录
-const volunteerRecords = ref([
-  {
-    id: 1,
-    activity: '救助站清洁',
-    date: '2024-01-18',
-    hours: 4,
-    location: '北京救助站'
-  },
-  {
-    id: 2,
-    activity: '动物喂养',
-    date: '2024-01-15',
-    hours: 3,
-    location: '北京救助站'
-  }
-])
+const volunteerRecords = ref<VolunteerRecord[]>([])
 
 // 收藏的动物
-const favoriteAnimals = ref([
-  {
-    id: 1,
-    name: '咪咪',
-    type: '猫',
-    age: '2岁',
-    image: 'https://images.unsplash.com/photo-1495360010541-f48722b34f7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80'
-  },
-  {
-    id: 2,
-    name: '旺财',
-    type: '狗',
-    age: '1岁',
-    image: 'https://images.unsplash.com/photo-1550697851-920b181d27da?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80'
+const favoriteAnimals = ref<Animal[]>([])
+
+// 加载用户数据
+const loadUserData = async () => {
+  try {
+    const response = await api.user.getUserInfo()
+    userInfo.value = 'data' in response ? response.data : response
+    
+    const adoptionResponse = await api.user.getAdoptionRecords()
+    adoptionRecords.value = 'data' in adoptionResponse ? adoptionResponse.data : adoptionResponse
+    
+    const donationResponse = await api.user.getDonationRecords()
+    donationRecords.value = 'data' in donationResponse ? donationResponse.data : donationResponse
+    
+    const volunteerResponse = await api.user.getVolunteerRecords()
+    volunteerRecords.value = 'data' in volunteerResponse ? volunteerResponse.data : volunteerResponse
+    
+    const favoriteResponse = await api.user.getFavoriteAnimals()
+    favoriteAnimals.value = 'data' in favoriteResponse ? favoriteResponse.data : favoriteResponse
+  } catch (error) {
+    ElMessage.error('加载用户数据失败')
   }
-])
+}
 
 // 编辑个人信息
 const editDialogVisible = ref(false)
 const editForm = ref({
-  username: userInfo.value.username,
-  email: userInfo.value.email,
-  phone: userInfo.value.phone
+  username: '',
+  email: '',
+  phone: ''
 })
 
-// 保存个人信息
-const saveUserInfo = () => {
-  userInfo.value = {
-    ...userInfo.value,
-    ...editForm.value
+// 打开编辑对话框
+const openEditDialog = () => {
+  editForm.value = {
+    username: userInfo.value.username,
+    email: userInfo.value.email,
+    phone: userInfo.value.phone
   }
-  editDialogVisible.value = false
-  ElMessage.success('保存成功')
+  editDialogVisible.value = true
+}
+
+// 保存个人信息
+const saveUserInfo = async () => {
+  try {
+    const updatedInfo = await api.user.updateUserInfo(editForm.value)
+    userInfo.value = {
+      ...userInfo.value,
+      ...updatedInfo
+    }
+    editDialogVisible.value = false
+    ElMessage.success('保存成功')
+  } catch (error) {
+    console.error('保存用户信息失败:', error)
+    ElMessage.error('保存失败，请稍后重试')
+  }
 }
 
 // 查看动物详情
@@ -120,10 +143,21 @@ const viewAdoptionDetail = (id: number) => {
 }
 
 // 取消收藏
-const removeFavorite = (id: number) => {
-  favoriteAnimals.value = favoriteAnimals.value.filter(animal => animal.id !== id)
-  ElMessage.success('取消收藏成功')
+const removeFavorite = async (id: number) => {
+  try {
+    await api.user.removeFavorite(id)
+    favoriteAnimals.value = favoriteAnimals.value.filter(animal => animal.id !== id)
+    ElMessage.success('取消收藏成功')
+  } catch (error) {
+    console.error('取消收藏失败:', error)
+    ElMessage.error('取消收藏失败，请稍后重试')
+  }
 }
+
+// 页面加载时获取数据
+onMounted(() => {
+  loadUserData()
+})
 </script>
 
 <template>
@@ -141,7 +175,7 @@ const removeFavorite = (id: number) => {
             <div class="user-details">
               <h2>{{ userInfo.username }}</h2>
               <p>注册时间：{{ userInfo.joinDate }}</p>
-              <el-button type="primary" @click="editDialogVisible = true">
+              <el-button type="primary" @click="openEditDialog">
                 编辑资料
               </el-button>
             </div>
