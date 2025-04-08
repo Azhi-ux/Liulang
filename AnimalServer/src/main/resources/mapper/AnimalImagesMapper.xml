@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.animal.animalserver.mapper.AnimalImagesMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.animal.animalserver.entity.AnimalImages">
+        <id column="id" property="id" />
+        <result column="animal_id" property="animalId" />
+        <result column="image_url" property="imageUrl" />
+        <result column="created_at" property="createdAt" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, animal_id, image_url, created_at
+    </sql>
+
+</mapper>

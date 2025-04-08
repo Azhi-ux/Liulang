@@ -1,0 +1,256 @@
+animal_db
+b5TWG4zqzlozIzDk
+mysql2.sqlpub.com:3307
+
+
+-- 用户表
+CREATE TABLE `users` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `username` VARCHAR(50) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(100) NOT NULL UNIQUE,
+  `phone` VARCHAR(20),
+  `avatar` VARCHAR(255),
+  `join_date` DATETIME NOT NULL,
+  `volunteer_hours` INT DEFAULT 0,
+  `donation_amount` DECIMAL(10,2) DEFAULT 0,
+  `adoptions` INT DEFAULT 0,
+  `status` VARCHAR(20) DEFAULT 'active',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 动物表
+CREATE TABLE `animals` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL,
+  `type` VARCHAR(20) NOT NULL,
+  `breed` VARCHAR(50) NOT NULL,
+  `age` VARCHAR(20),
+  `gender` VARCHAR(10),
+  `size` VARCHAR(20),
+  `description` TEXT,
+  `health_status` VARCHAR(50),
+  `vaccination_status` VARCHAR(50),
+  `adoption_status` VARCHAR(20) DEFAULT 'available',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 动物图片表
+CREATE TABLE `animal_images` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `animal_id` INT NOT NULL,
+  `image_url` VARCHAR(255) NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`animal_id`) REFERENCES `animals`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 领养申请表
+CREATE TABLE `adoption_applications` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `user_id` INT,
+  `animal_id` INT NOT NULL,
+  `applicant_name` VARCHAR(50) NOT NULL,
+  `applicant_phone` VARCHAR(20) NOT NULL,
+  `applicant_email` VARCHAR(100) NOT NULL,
+  `home_environment` TEXT,
+  `experience` TEXT,
+  `status` VARCHAR(20) DEFAULT 'pending',
+  `reason` TEXT,
+  `submit_date` DATETIME NOT NULL,
+  `review_date` DATETIME,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL,
+  FOREIGN KEY (`animal_id`) REFERENCES `animals`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 捐赠项目表
+CREATE TABLE `donation_projects` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `title` VARCHAR(100) NOT NULL,
+  `description` TEXT,
+  `target_amount` DECIMAL(10,2) NOT NULL,
+  `current_amount` DECIMAL(10,2) DEFAULT 0,
+  `start_date` DATE NOT NULL,
+  `end_date` DATE NOT NULL,
+  `cover_image` VARCHAR(255),
+  `status` VARCHAR(20) DEFAULT 'ongoing',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 捐赠记录表
+CREATE TABLE `donations` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `user_id` INT,
+  `project_id` INT,
+  `amount` DECIMAL(10,2) NOT NULL,
+  `purpose` VARCHAR(100),
+  `name` VARCHAR(50) NOT NULL,
+  `phone` VARCHAR(20),
+  `email` VARCHAR(100),
+  `message` TEXT,
+  `payment_method` VARCHAR(50) NOT NULL,
+  `payment_id` VARCHAR(100),
+  `status` VARCHAR(20) DEFAULT 'pending',
+  `donation_date` DATETIME NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL,
+  FOREIGN KEY (`project_id`) REFERENCES `donation_projects`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 志愿者活动表
+CREATE TABLE `volunteer_activities` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `title` VARCHAR(100) NOT NULL,
+  `description` TEXT,
+  `location` VARCHAR(100) NOT NULL,
+  `date` DATE NOT NULL,
+  `start_time` TIME NOT NULL,
+  `end_time` TIME NOT NULL,
+  `required_volunteers` INT NOT NULL,
+  `current_volunteers` INT DEFAULT 0,
+  `status` VARCHAR(20) DEFAULT 'upcoming',
+  `image` VARCHAR(255),
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 活动技能需求表
+CREATE TABLE `activity_skills` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `activity_id` INT NOT NULL,
+  `skill_name` VARCHAR(50) NOT NULL,
+  FOREIGN KEY (`activity_id`) REFERENCES `volunteer_activities`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 志愿者申请表
+CREATE TABLE `volunteer_applications` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `user_id` INT,
+  `name` VARCHAR(50) NOT NULL,
+  `phone` VARCHAR(20) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  `age` INT NOT NULL,
+  `experience` TEXT,
+  `reason` TEXT NOT NULL,
+  `status` VARCHAR(20) DEFAULT 'pending',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 申请人可用时间表
+CREATE TABLE `volunteer_available_times` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `application_id` INT NOT NULL,
+  `available_time` VARCHAR(50) NOT NULL,
+  FOREIGN KEY (`application_id`) REFERENCES `volunteer_applications`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 申请人技能表
+CREATE TABLE `volunteer_skills` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `application_id` INT NOT NULL,
+  `skill_name` VARCHAR(50) NOT NULL,
+  FOREIGN KEY (`application_id`) REFERENCES `volunteer_applications`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 志愿者活动记录表
+CREATE TABLE `volunteer_records` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `user_id` INT,
+  `activity_id` INT,
+  `activity_name` VARCHAR(100) NOT NULL,
+  `location` VARCHAR(100) NOT NULL,
+  `record_date` DATE NOT NULL,
+  `hours` DECIMAL(5,2) NOT NULL,
+  `status` VARCHAR(20) DEFAULT 'completed',
+  `notes` TEXT,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL,
+  FOREIGN KEY (`activity_id`) REFERENCES `volunteer_activities`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 社区帖子表
+CREATE TABLE `posts` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `user_id` INT,
+  `title` VARCHAR(100) NOT NULL,
+  `content` TEXT NOT NULL,
+  `author` VARCHAR(50) NOT NULL,
+  `avatar` VARCHAR(255),
+  `comment_count` INT DEFAULT 0,
+  `like_count` INT DEFAULT 0,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 帖子图片表
+CREATE TABLE `post_images` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `post_id` INT NOT NULL,
+  `image_url` VARCHAR(255) NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`post_id`) REFERENCES `posts`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 帖子标签表
+CREATE TABLE `post_tags` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `post_id` INT NOT NULL,
+  `tag_name` VARCHAR(30) NOT NULL,
+  FOREIGN KEY (`post_id`) REFERENCES `posts`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 评论表
+CREATE TABLE `comments` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `post_id` INT NOT NULL,
+  `user_id` INT,
+  `content` TEXT NOT NULL,
+  `author` VARCHAR(50) NOT NULL,
+  `avatar` VARCHAR(255),
+  `like_count` INT DEFAULT 0,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (`post_id`) REFERENCES `posts`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 点赞记录表
+CREATE TABLE `likes` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `user_id` INT NOT NULL,
+  `likeable_id` INT NOT NULL,
+  `likeable_type` ENUM('post', 'comment') NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+  UNIQUE KEY `user_like_unique` (`user_id`, `likeable_id`, `likeable_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 收藏表
+CREATE TABLE `favorites` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `user_id` INT NOT NULL,
+  `animal_id` INT NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`animal_id`) REFERENCES `animals`(`id`) ON DELETE CASCADE,
+  UNIQUE KEY `user_animal_unique` (`user_id`, `animal_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 系统设置表
+CREATE TABLE `settings` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `key` VARCHAR(100) NOT NULL UNIQUE,
+  `value` TEXT,
+  `description` VARCHAR(255),
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

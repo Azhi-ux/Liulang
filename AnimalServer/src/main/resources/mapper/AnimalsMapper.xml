@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.animal.animalserver.mapper.AnimalsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.animal.animalserver.entity.Animals">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="type" property="type" />
+        <result column="breed" property="breed" />
+        <result column="age" property="age" />
+        <result column="gender" property="gender" />
+        <result column="size" property="size" />
+        <result column="description" property="description" />
+        <result column="health_status" property="healthStatus" />
+        <result column="vaccination_status" property="vaccinationStatus" />
+        <result column="adoption_status" property="adoptionStatus" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, type, breed, age, gender, size, description, health_status, vaccination_status, adoption_status, created_at, updated_at
+    </sql>
+
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.animal.animalserver.mapper.DonationsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.animal.animalserver.entity.Donations">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="project_id" property="projectId" />
+        <result column="amount" property="amount" />
+        <result column="purpose" property="purpose" />
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+        <result column="email" property="email" />
+        <result column="message" property="message" />
+        <result column="payment_method" property="paymentMethod" />
+        <result column="payment_id" property="paymentId" />
+        <result column="status" property="status" />
+        <result column="donation_date" property="donationDate" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, project_id, amount, purpose, name, phone, email, message, payment_method, payment_id, status, donation_date, created_at, updated_at
+    </sql>
+
+</mapper>

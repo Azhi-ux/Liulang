@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.animal.animalserver.mapper.AdoptionApplicationsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.animal.animalserver.entity.AdoptionApplications">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="animal_id" property="animalId" />
+        <result column="applicant_name" property="applicantName" />
+        <result column="applicant_phone" property="applicantPhone" />
+        <result column="applicant_email" property="applicantEmail" />
+        <result column="home_environment" property="homeEnvironment" />
+        <result column="experience" property="experience" />
+        <result column="status" property="status" />
+        <result column="reason" property="reason" />
+        <result column="submit_date" property="submitDate" />
+        <result column="review_date" property="reviewDate" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, animal_id, applicant_name, applicant_phone, applicant_email, home_environment, experience, status, reason, submit_date, review_date, created_at, updated_at
+    </sql>
+
+</mapper>
